@@ -1,0 +1,1762 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "version": "1.0.0",
+    "title": "Open AQ Platform API",
+    "description": "An API for open air quality data."
+  },
+  "servers": [
+    {
+      "url": "https://api.openaq.org"
+    }
+  ],
+  "paths": {
+    "/beta/averages": {
+      "get": {
+        "tags": [
+          "Average"
+        ],
+        "summary": "Provides averages across specified spatial and temporal resolutions.",
+        "description": "NOTE: Because the endpoint is in beta, it has limited functionality, functionality may change, and there may be bugs. Learn more and give feedback: github.com/openaq/openaq-averaging.",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "spatial",
+            "description": "Indicate spatial resolution for calculated average.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "location",
+              "enum": [
+                "location",
+                "city",
+                "country"
+              ]
+            }
+          },
+          {
+            "in": "query",
+            "name": "temporal",
+            "required": true,
+            "description": "Indicate temporal resolution for calculated average.",
+            "schema": {
+              "type": "string",
+              "default": "day",
+              "enum": [
+                "day",
+                "month",
+                "year"
+              ]
+            }
+          },
+          {
+            "in": "query",
+            "name": "country",
+            "description": "Limit results by a certain country.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "city",
+            "description": "Limit results by a certain city.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "location",
+            "description": "Limit results by a certain location.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "parameter",
+            "description": "Limit to certain one or more parameters.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "date_from",
+            "description": "Show results after a certain date (in utc). (ex. 2015, or 2015-12-20)",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "date_to",
+            "description": "Show results before a certain date (in utc). (ex. 2015-12-20, or 2015-12-20)",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "order_by",
+            "description": "Order by one or more fields. (ex. order_by=date or order_by[]=value&order_by[]=parameter).",
+            "schema": {
+              "type": "array",
+              "default": [
+                "date"
+              ],
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          {
+            "in": "query",
+            "name": "sort",
+            "description": "Define sort order for one or more fields (ex. sort=desc or sort[]=asc&sort[]=desc).",
+            "schema": {
+              "type": "array",
+              "default": [
+                "asc"
+              ],
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "description": "Change the number of results returned, max is 10000.",
+            "schema": {
+              "type": "number",
+              "default": 100
+            }
+          },
+          {
+            "in": "query",
+            "name": "page",
+            "description": "Paginate through results. Max is set at 100.",
+            "schema": {
+              "type": "number",
+              "default": 1
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Average"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/responses/BadRequest"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/cities": {
+      "get": {
+        "tags": [
+          "Cities"
+        ],
+        "summary": "Provides a simple listing of cities within the platform.",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "country",
+            "description": "Limit results by a certain country.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "order_by",
+            "description": "Order by one or more fields (ex. order_by=country or order_by[]=country&order_by[]=locations).",
+            "schema": {
+              "type": "array",
+              "default": [
+                "country"
+              ],
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          {
+            "in": "query",
+            "name": "sort",
+            "description": "Define sort order for one or more fields (ex. sort=desc or sort[]=asc&sort[]=desc).",
+            "schema": {
+              "type": "array",
+              "default": [
+                "asc"
+              ],
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "description": "Change the number of results returned, max is 10000.",
+            "schema": {
+              "type": "number",
+              "default": 100
+            }
+          },
+          {
+            "in": "query",
+            "name": "page",
+            "description": "Paginate through results.",
+            "schema": {
+              "type": "number",
+              "default": 1
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Cities"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "",
+            "content": {
+              "application": {
+                "schema": {
+                  "$ref": "#/components/responses/BadRequest"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/countries": {
+      "get": {
+        "tags": [
+          "Countries"
+        ],
+        "summary": "Provides a simple listing of countries within the platform.",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "order_by",
+            "description": "Order by one or more fields (ex. order_by=cities or order_by[]=cities&order_by[]=locations).",
+            "schema": {
+              "type": "array",
+              "default": [
+                "cities"
+              ],
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          {
+            "in": "query",
+            "name": "sort",
+            "description": "Define sort order for one or more fields (ex. sort=desc or sort[]=asc&sort[]=desc).",
+            "schema": {
+              "type": "array",
+              "default": [
+                "asc"
+              ],
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "description": "Change the number of results returned, max is 10000.",
+            "schema": {
+              "type": "number",
+              "default": 100
+            }
+          },
+          {
+            "in": "query",
+            "name": "page",
+            "description": "Paginate through results.",
+            "schema": {
+              "type": "number",
+              "default": 1
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Countries"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "",
+            "content": {
+              "application": {
+                "schema": {
+                  "$ref": "#/components/responses/BadRequest"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/fetches": {
+      "get": {
+        "tags": [
+          "Fetches"
+        ],
+        "summary": "Providing data about individual fetch operations that are used to populate data in the platform.",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "order_by",
+            "description": "Order by one or more fields (ex. order_by=timeEnded or order_by[]=timeEnded&order_by[]=count).",
+            "schema": {
+              "type": "array",
+              "default": [
+                "timeStarted"
+              ],
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          {
+            "in": "query",
+            "name": "sort",
+            "description": "Define sort order for one or more fields (ex. sort=desc or sort[]=asc&sort[]=desc).",
+            "schema": {
+              "type": "array",
+              "default": [
+                "asc"
+              ],
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "description": "Change the number of results returned, max is 10000.",
+            "schema": {
+              "type": "number",
+              "default": 100
+            }
+          },
+          {
+            "in": "query",
+            "name": "page",
+            "description": "Paginate through results.",
+            "schema": {
+              "type": "number",
+              "default": 1
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Fetches"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "",
+            "content": {
+              "application": {
+                "schema": {
+                  "$ref": "#/components/responses/BadRequest"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/latest": {
+      "get": {
+        "tags": [
+          "Latest"
+        ],
+        "summary": "Provides the latest value of each available parameter for every location in the system.",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "city",
+            "description": "Limit results by a certain city.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "country",
+            "description": "Limit results by a certain country.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "location",
+            "description": "Limit results by a certain location.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "parameter",
+            "description": "Limit to only a certain parameter. Allowed values: pm25, pm10, so2, no2, o3, co, bc",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "has_geo",
+            "description": "Filter out items that have or do not have geographic information.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "coordinates",
+            "description": "Center point (lat, lon) used to get measurements within a certain area. (ex. coordinates=40.23,34.17) Will add distance property.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "radius",
+            "description": "Radius (in meters) used to get measurements within a certain area, must be used with coordinates.\"",
+            "schema": {
+              "type": "number",
+              "default": 2500
+            }
+          },
+          {
+            "in": "query",
+            "name": "order_by",
+            "description": "Order by one or more fields (ex. order_by=country or order_by[]=country&order_by[]=city).",
+            "schema": {
+              "type": "array",
+              "default": [
+                "location"
+              ],
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          {
+            "in": "query",
+            "name": "sort",
+            "description": "Define sort order for one or more fields (ex. sort=desc or sort[]=asc&sort[]=desc).",
+            "schema": {
+              "type": "array",
+              "default": [
+                "asc"
+              ],
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "description": "Change the number of results returned, max is 10000.",
+            "schema": {
+              "type": "number",
+              "default": 100
+            }
+          },
+          {
+            "in": "query",
+            "name": "page",
+            "description": "Paginate through results.",
+            "schema": {
+              "type": "number",
+              "default": 1
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Latest"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "",
+            "content": {
+              "application": {
+                "schema": {
+                  "$ref": "#/components/responses/BadRequest"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/locations": {
+      "get": {
+        "tags": [
+          "Locations"
+        ],
+        "summary": "Provides a list of measurement locations and their meta data.",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "city",
+            "description": "Limit results by one or more cities (ex. city[]=Lisboa&city[]=Porto)",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          {
+            "in": "query",
+            "name": "country",
+            "description": "Limit results by one or more countries (ex. country[]=NL&country[]=PL)",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "location",
+            "description": "Limit results by one or more locations (ex. location[]=Reja&location[]=Nijmegen-Graafseweg)",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "parameter",
+            "description": "Limit to certain one or more parameters (ex. parameter=pm25 or parameter[]=co&parameter[]=pm25)",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "pm25",
+                "pm10",
+                "so2",
+                "no2",
+                "o3",
+                "co",
+                "bc"
+              ]
+            }
+          },
+          {
+            "in": "query",
+            "name": "has_geo",
+            "description": "Filter out items that have or do not have geographic information.",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "in": "query",
+            "name": "coordinates",
+            "description": "Center point (lat, lon) used to get measurements within a certain area. (ex. coordinates=40.23,34.17) Will add distance property.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "radius",
+            "description": "Radius (in meters) used to get measurements within a certain area, must be used with coordinates.\"",
+            "schema": {
+              "type": "number",
+              "default": 2500
+            }
+          },
+          {
+            "in": "query",
+            "name": "order_by",
+            "description": "Order by one or more fields (ex. order_by=count or order_by[]=country&order_by[]=count).",
+            "schema": {
+              "type": "array",
+              "default": [
+                "location"
+              ],
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          {
+            "in": "query",
+            "name": "sort",
+            "description": "Define sort order for one or more fields (ex. sort=desc or sort[]=asc&sort[]=desc).",
+            "schema": {
+              "type": "array",
+              "default": [
+                "asc"
+              ],
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "description": "Change the number of results returned, max is 10000.",
+            "schema": {
+              "type": "number",
+              "default": 100
+            }
+          },
+          {
+            "in": "query",
+            "name": "page",
+            "description": "Paginate through results.",
+            "schema": {
+              "type": "number",
+              "default": 1
+            }
+          },
+          {
+            "in": "query",
+            "name": "siteType",
+            "description": "Filter by metadata property \"site type\". Supports one or more values.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "activationDate",
+            "description": "Filter by metadata property \"activation date\". Has to be a range with a start and end. (ex: activationDate[]=2019/01/01&activationDate[]=2019/01/05)",
+            "schema": {
+              "type": "string",
+              "format": "date"
+            }
+          },
+          {
+            "in": "query",
+            "name": "completeness",
+            "description": "Filter by metadata completeness. Has to be a range with a start and end bewtween 0 and 1. (ex: completeness[]=0.9&completeness[]=1)",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "in": "query",
+            "name": "inletHeight",
+            "description": "Filter by metadata property \"inlet height\". Has to be a range with a start and end. (ex: inletHeight[]=1&inletHeight[]=12)",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Locations"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "",
+            "content": {
+              "application": {
+                "schema": {
+                  "$ref": "#/components/responses/BadRequest"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/locations/{id}": {
+      "get": {
+        "tags": [
+          "Locations"
+        ],
+        "summary": "Provides data on a specific location",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "metadata",
+            "description": "Whether or not to send the location metadata.",
+            "schema": {
+              "type": "boolean"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Location"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "",
+            "content": {
+              "application": {
+                "schema": {
+                  "$ref": "#/components/responses/BadRequest"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/locations/metadata": {
+      "put": {
+        "tags": [
+          "Locations"
+        ],
+        "summary": "Allows the user to update the metadata for a given location.",
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "",
+            "content": {
+              "application": {
+                "schema": {
+                  "$ref": "#/components/responses/BadRequest"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/locations/measurements": {
+      "get": {
+        "tags": [
+          "Measurements"
+        ],
+        "summary": "Provides data about individual measurements",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "country",
+            "description": "Limit results by a certain country.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "city",
+            "description": "Limit results by a certain city.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "location",
+            "description": "Limit results by a certain location.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "parameter",
+            "description": "Limit to certain one or more parameters (ex. parameter=pm25 or parameter[]=co&parameter[]=pm25)",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "has_geo",
+            "description": "Filter out items that have or do not have geographic information. Allowed values: true, false",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "in": "query",
+            "name": "coordinates",
+            "description": "Center point (lat, lon) used to get measurements within a certain area. (ex. coordinates=40.23,34.17)",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "radius",
+            "description": "Radius (in meters) used to get measurements within a certain area, must be used with coordinates.",
+            "schema": {
+              "type": "number",
+              "default": 2500
+            }
+          },
+          {
+            "in": "query",
+            "name": "value_from",
+            "description": "Show results above value threshold, useful in combination with parameter.",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "in": "query",
+            "name": "value_to",
+            "description": "Show results below value threshold, useful in combination with parameter.",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "in": "query",
+            "name": "date_from",
+            "description": "Show results after a certain date. This acts on the utc timestamp of each measurement. (ex. 2015-12-20, or 2015-12-20T09:00:00)",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "date_to",
+            "description": "Show results before a certain date. This acts on the utc timestamp of each measurement. (ex. 2015-12-20, or 2015-12-20T09:00:00)",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "order_by",
+            "description": "Order by one or more fields (ex. order_by=date or order_by[]=value&order_by[]=parameter).",
+            "schema": {
+              "type": "array",
+              "default": [
+                "date"
+              ],
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          {
+            "in": "query",
+            "name": "sort",
+            "description": "Define sort order for one or more fields (ex. sort=desc or sort[]=asc&sort[]=desc).",
+            "schema": {
+              "type": "array",
+              "default": [
+                "asc"
+              ],
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          {
+            "in": "query",
+            "name": "include_fields",
+            "description": "Include extra fields in the output in addition to default values. Allowed values: attribution, averagingPeriod, sourceName",
+            "schema": {
+              "type": "array",
+              "default": [
+                "asc"
+              ],
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "description": "Change the number of results returned, max is 10000.",
+            "schema": {
+              "type": "number",
+              "default": 100
+            }
+          },
+          {
+            "in": "query",
+            "name": "page",
+            "description": "Paginate through results. Max is set at 100.",
+            "schema": {
+              "type": "number",
+              "default": 1
+            }
+          },
+          {
+            "in": "query",
+            "name": "format",
+            "description": "Format for data return. Note that csv will return a max of 65,536 results when no limit is set.",
+            "schema": {
+              "type": "string",
+              "default": "json",
+              "enum": [
+                "csv",
+                "json"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Measurements"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "",
+            "content": {
+              "application": {
+                "schema": {
+                  "$ref": "#/components/responses/BadRequest"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/parameters": {
+      "get": {
+        "tags": [
+          "Parameters"
+        ],
+        "summary": "Provides a simple listing of parameters within the platform.",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "order_by",
+            "description": "Order by one or more fields (ex. order_by=name or order_by[]=preferredUnit&order_by[]=id).",
+            "schema": {
+              "type": "array",
+              "default": [
+                "name"
+              ],
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          {
+            "in": "query",
+            "name": "sort",
+            "description": "Define sort order for one or more fields (ex. sort=desc or sort[]=asc&sort[]=desc).",
+            "schema": {
+              "type": "array",
+              "default": [
+                "asc"
+              ],
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Parameters"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "",
+            "content": {
+              "application": {
+                "schema": {
+                  "$ref": "#/components/responses/BadRequest"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/sources": {
+      "get": {
+        "tags": [
+          "Sources"
+        ],
+        "summary": "Provides a list of data sources.",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "order_by",
+            "description": "Order by one or more fields (ex. order_by=country or order_by[]=active&order_by[]=country).",
+            "schema": {
+              "type": "array",
+              "default": [
+                "name"
+              ],
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          {
+            "in": "query",
+            "name": "sort",
+            "description": "Define sort order for one or more fields (ex. sort=desc or sort[]=asc&sort[]=desc).",
+            "schema": {
+              "type": "array",
+              "default": [
+                "asc"
+              ],
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "description": "Change the number of results returned, max is 10000.",
+            "schema": {
+              "type": "number",
+              "default": 100
+            }
+          },
+          {
+            "in": "query",
+            "name": "page",
+            "description": "Paginate through results.",
+            "schema": {
+              "type": "number",
+              "default": 1
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sources"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "",
+            "content": {
+              "application": {
+                "schema": {
+                  "$ref": "#/components/responses/BadRequest"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "responses": {
+      "BadRequest": {
+        "$ref": "#/components/schemas/Error"
+      }
+    },
+    "schemas": {
+      "Error": {
+        "type": "object",
+        "properties": {
+          "statusCode": {
+            "type": "number",
+            "description": "The error code"
+          },
+          "error": {
+            "type": "string",
+            "description": "Error name"
+          },
+          "message": {
+            "type": "string",
+            "description": "Error message"
+          }
+        },
+        "example": {
+          "statusCode": 400,
+          "error": "Bad Request",
+          "message": "Oops!"
+        }
+      },
+      "Sources": {
+        "type": "object",
+        "properties": {
+          "url": {
+            "type": "string",
+            "description": "The actual data source URL"
+          },
+          "adapter": {
+            "type": "string",
+            "description": "Name of adapter that collects data from source"
+          },
+          "name": {
+            "type": "string",
+            "description": "Source name"
+          },
+          "city": {
+            "type": "string",
+            "description": "City where data is gathered"
+          },
+          "country": {
+            "type": "string",
+            "description": "Country where data is gathered"
+          },
+          "description": {
+            "type": "string",
+            "description": "Description of the data source"
+          },
+          "resolution": {
+            "type": "string",
+            "description": "Source update frequency (deprecated)"
+          },
+          "sourceURL": {
+            "type": "string",
+            "description": "A related URL about the source"
+          },
+          "contacts": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Addresses you may send inquiries about the source"
+          },
+          "active": {
+            "type": "boolean",
+            "description": "Whether the source is used at this time"
+          }
+        },
+        "example": [
+          {
+            "url": "http://airquality.environment.nsw.gov.au/aquisnetnswphp/getPage.php?reportid=2",
+            "adapter": "nsw",
+            "name": "Australia - New South Wales",
+            "city": null,
+            "country": "AU",
+            "description": "Measurements from the Office of Environment & Heritage of the New South Wales government.",
+            "resolution": "1 hr",
+            "sourceURL": "http://www.environment.nsw.gov.au/AQMS/hourlydata.htm",
+            "contacts": [
+              "olaf@developmentseed.org"
+            ],
+            "active": true
+          },
+          {
+            "url": "http://stateair.net/dos/RSS/Dhaka/Dhaka-PM2.5.xml",
+            "adapter": "stateair",
+            "name": "StateAir_Dhaka",
+            "city": "Dhaka",
+            "country": "BD",
+            "description": null,
+            "sourceURL": "http://stateair.net/dos/",
+            "contacts": [
+              "info@openaq.org"
+            ],
+            "active": false
+          }
+        ]
+      },
+      "Parameters": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Parameter ID"
+          },
+          "name": {
+            "type": "string",
+            "description": "The parameter name"
+          },
+          "description": {
+            "type": "number",
+            "description": "A description of the parameter"
+          },
+          "preferredUnit": {
+            "type": "number",
+            "description": "The parameter's preferred unit"
+          }
+        },
+        "example": [
+          {
+            "id": "pm25",
+            "name": "PM2.5",
+            "description": "Particulate matter less than 2.5 micrometers in diameter",
+            "preferredUnit": "µg/m³"
+          },
+          {
+            "id": "pm10",
+            "name": "PM10",
+            "description": "Particulate matter less than 10 micrometers in diameter",
+            "preferredUnit": "µg/m³"
+          }
+        ]
+      },
+      "Measurements": {
+        "type": "object",
+        "properties": {
+          "date": {
+            "type": "object",
+            "description": "Date and time of measurement in both local and UTC default"
+          },
+          "parameter": {
+            "type": "string",
+            "description": "Property being measured default"
+          },
+          "value": {
+            "type": "number",
+            "description": "Value of measurement default"
+          },
+          "unit": {
+            "type": "string",
+            "description": "Unit of measurement default"
+          },
+          "location": {
+            "type": "string",
+            "description": "Location description for measurement default"
+          },
+          "country": {
+            "type": "string",
+            "description": "Country containing measurement in 2 letter ISO code default"
+          },
+          "city": {
+            "type": "string",
+            "description": "City containing measurement default"
+          },
+          "coordinates": {
+            "type": "object",
+            "description": "Latitude and longitude measurement was taken at default"
+          },
+          "sourceName": {
+            "type": "string",
+            "description": "Name of source matching to sources table for reference"
+          }
+        },
+        "example": {
+          "parameter": "Ammonia",
+          "date": {
+            "utc": "2015-07-16T20:30:00.000Z",
+            "local": "2015-07-16T20:30:00.000Z"
+          },
+          "value": 72.9,
+          "unit": "µg/m3",
+          "location": "Anand Vihar",
+          "country": "IN",
+          "city": "Delhi",
+          "sourceName": "Anand Vihar",
+          "averagingPeriod": {
+            "value": 1,
+            "unit": "hours"
+          },
+          "coordinates": {
+            "latitude": 43.34,
+            "longitude": 23.04
+          },
+          "attribution": [
+            {
+              "name": "SINCA",
+              "url": "http://sinca.mma.gob.cl/"
+            },
+            {
+              "name": "Ministerio del Medio Ambiente"
+            }
+          ]
+        }
+      },
+      "Location": {
+        "type": "object",
+        "example": {
+          "count": 728,
+          "sourceName": "Australia - New South Wales",
+          "firstUpdated": "2015-10-13T01:00:00.000Z",
+          "lastUpdated": "2015-11-14T03:00:00.000Z",
+          "parameters": [
+            "pm10"
+          ],
+          "country": "AU",
+          "city": "Central Tablelands",
+          "location": "Bathurst",
+          "metadata": {
+            "name": "meta-1",
+            "instruments": [
+              {
+                "type": "test-instrument",
+                "active": true,
+                "parameters": [
+                  3
+                ],
+                "serialNumber": "abc1"
+              }
+            ]
+          },
+          "metadataVersion": 2,
+          "metadataUserId": "test|12345",
+          "metadataUpdatedAt": "2019-01-01T00:00:01.000Z"
+        }
+      },
+      "Locations": {
+        "type": "object",
+        "properties": {
+          "location": {
+            "type": "string",
+            "description": "Location identifier"
+          },
+          "country": {
+            "type": "string",
+            "description": "Country containing location in 2 letter ISO code"
+          },
+          "city": {
+            "type": "string",
+            "description": "City containing location"
+          },
+          "count": {
+            "type": "number",
+            "description": "Number of measurements, cumulative by specificity level"
+          },
+          "distance": {
+            "type": "number",
+            "description": "Distance to the specified coordinates (available when coordinates parameter is used, measured by meters)"
+          },
+          "sourceName": {
+            "type": "string",
+            "description": "Can follow this to determine active adapter used for this location"
+          },
+          "sourceNames": {
+            "type": "array",
+            "description": "Array of sourceName, both active and unused ones",
+            "items": {
+              "type": "string"
+            }
+          },
+          "firstUpdated": {
+            "type": "string",
+            "format": "date",
+            "description": "When was data first grabbed for this location (in UTC)?"
+          },
+          "lastUpdated": {
+            "type": "string",
+            "format": "date",
+            "description": "When was data last grabbed for this location (in UTC)?"
+          },
+          "parameters": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "List of parameters present for this location"
+          },
+          "coordinates": {
+            "type": "object",
+            "description": "Coordinates of location"
+          },
+          "metadata": {
+            "type": "object",
+            "description": "Metadata of this location if metadata flag was provided."
+          },
+          "metadataVersion": {
+            "type": "string",
+            "description": "Metadata version of this location if metadata flag was provided."
+          },
+          "metadataUserId": {
+            "type": "string",
+            "description": "Last metadata author if metadata flag was provided."
+          },
+          "metadataUpdatedAt": {
+            "type": "string",
+            "description": "Last metadata update time if metadata flag was provided."
+          },
+          "metadataCompleteness": {
+            "type": "number",
+            "description": "Metadata completeness for this location if metadata flag was provided."
+          }
+        },
+        "example": [
+          {
+            "count": 4242,
+            "sourceName": "Australia - New South Wales",
+            "firstUpdated": "2015-10-13T01:00:00.000Z",
+            "lastUpdated": "2015-11-14T03:00:00.000Z",
+            "parameters": [
+              "pm25",
+              "pm10",
+              "so2",
+              "co",
+              "no2",
+              "o3"
+            ],
+            "country": "AU",
+            "city": "Central Coast",
+            "location": "Wyong"
+          },
+          {
+            "count": 728,
+            "sourceName": "Australia - New South Wales",
+            "firstUpdated": "2015-10-13T01:00:00.000Z",
+            "lastUpdated": "2015-11-14T03:00:00.000Z",
+            "parameters": [
+              "pm10"
+            ],
+            "country": "AU",
+            "city": "Central Tablelands",
+            "location": "Bathurst"
+          }
+        ]
+      },
+      "Latest": {
+        "type": "object",
+        "properties": {
+          "location": {
+            "type": "string",
+            "description": "ocation identifier."
+          },
+          "country": {
+            "type": "string",
+            "description": "Country containing measurement in 2 letter ISO code."
+          },
+          "city": {
+            "type": "string",
+            "description": "City containing location."
+          },
+          "measurements": {
+            "type": "array",
+            "description": "An array of the latest measurements for each parameter for this location.",
+            "items": {
+              "type": "object"
+            }
+          }
+        },
+        "example": {
+          "results": [
+            {
+              "location": "Punjabi Bagh",
+              "country": "Delhi",
+              "city": "IN",
+              "measurements": [
+                {
+                  "parameter": "so2",
+                  "value": "7.8",
+                  "lastUpdated": null,
+                  "unit": "mg/m3",
+                  "sourceName": "CPCB",
+                  "averagingPeriod": {
+                    "unit": "hours",
+                    "value": 0.25
+                  }
+                },
+                {
+                  "parameter": "co",
+                  "value": 1.3,
+                  "lastUpdated": null,
+                  "unit": "µg/m3",
+                  "sourceName": "Punjabi Bagh",
+                  "averagingPeriod": {
+                    "unit": "hours",
+                    "value": 0.25
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "Fetches": {
+        "type": "object",
+        "properties": {
+          "timeStarted": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Start time of fetch task in UTC"
+          },
+          "timeEnded": {
+            "type": "string",
+            "format": "date-time",
+            "description": "End time of fetch task in UTC"
+          },
+          "count": {
+            "type": "number",
+            "description": "Count of new, inserted measurements"
+          },
+          "results": {
+            "type": "object",
+            "description": "JSON containing metadata for each source fetch task",
+            "properties": {
+              "message": {
+                "type": "string"
+              },
+              "failure": {
+                "type": "object"
+              },
+              "count": {
+                "type": "number"
+              },
+              "duration": {
+                "type": "number",
+                "format": "float"
+              },
+              "sourceName": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "example": {
+          "meta": {
+            "name": "openaq-api",
+            "license": "CC BY 4.0",
+            "website": "https://docs.openaq.org/",
+            "page": 1,
+            "limit": 100,
+            "found": 3
+          },
+          "results": [
+            {
+              "count": 0,
+              "results": [
+                {
+                  "message": "New measurements inserted for Mandir Marg: 1",
+                  "failure": {},
+                  "count": 0,
+                  "duration": 0.154,
+                  "sourceName": "Mandir Marg"
+                },
+                {
+                  "message": "New measurements inserted for Sao Paulo: 1898",
+                  "failure": {},
+                  "count": 1898,
+                  "duration": 16.918,
+                  "sourceName": "Sao Paulo"
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "Countries": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string",
+            "description": "2 letter ISO code"
+          },
+          "name": {
+            "type": "string",
+            "description": "Country name"
+          },
+          "count": {
+            "type": "string",
+            "description": "Number of measurements for the country"
+          },
+          "cities": {
+            "type": "number",
+            "description": "Number of cities in this country"
+          },
+          "locations": {
+            "type": "number",
+            "description": "Number of locations in this country"
+          }
+        },
+        "example": [
+          {
+            "count": 40638,
+            "code": "AU",
+            "name": "Australia",
+            "cities": 1,
+            "locations": 1
+          },
+          {
+            "count": 49101,
+            "code": "BH",
+            "name": "Bahrain",
+            "cities": 1,
+            "locations": 1
+          }
+        ]
+      },
+      "Cities": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Name of the city"
+          },
+          "city": {
+            "type": "string",
+            "description": "Name of the city (DEPRECATED: use \"name\" instead)"
+          },
+          "country": {
+            "type": "string",
+            "description": "Country containing city, in 2 letter ISO code"
+          },
+          "count": {
+            "type": "number",
+            "description": "Number of measurements for this city"
+          },
+          "locations": {
+            "type": "number",
+            "description": "Number of locations in this city"
+          }
+        },
+        "example": [
+          {
+            "city": "Amsterdam",
+            "country": "NL",
+            "count": 21301,
+            "locations": 14
+          },
+          {
+            "city": "Abu Dhabi",
+            "country": "AE",
+            "count": 37423,
+            "locations": 1
+          }
+        ]
+      },
+      "Average": {
+        "type": "object",
+        "properties": {
+          "country": {
+            "type": "string",
+            "description": "Country for calculated average in 2 letter ISO code"
+          },
+          "city": {
+            "type": "string",
+            "description": "City for calculated average"
+          },
+          "location": {
+            "type": "string",
+            "description": "Location for calculated average"
+          },
+          "coordinates": {
+            "type": "object",
+            "description": "Latitude and longitude for calculated average",
+            "properties": {
+              "longitude": {
+                "type": "number",
+                "format": "float"
+              },
+              "latitude": {
+                "type": "number",
+                "format": "float"
+              }
+            }
+          },
+          "parameter": {
+            "type": "string",
+            "description": "Parameter for calculated average for"
+          },
+          "date": {
+            "type": "string",
+            "description": "Date and time for calculated average in UTC"
+          },
+          "average": {
+            "type": "number",
+            "format": "double",
+            "description": "Calculated average"
+          },
+          "measurement_count": {
+            "type": "number",
+            "description": "Number of measurements used to calculate average"
+          }
+        },
+        "example": {
+          "country": "AE",
+          "city": "Abu Dhabi",
+          "location": "US Diplomatic Post Abu Dhabi",
+          "coordinates": {
+            "longitude": 54.43375,
+            "latitude": 24.4244
+          },
+          "parameter": "pm25",
+          "date": "2017-12-26T00:00:00.000Z",
+          "average": 41.2857,
+          "measurement_count": null
+        }
+      }
+    }
+  }
+}
