@@ -1,0 +1,197 @@
+openapi: 3.0.0
+info:
+  version: "1.0.0"
+  title: "Open AQ Platform API"
+  summary: "An API for open air quality data."
+
+servers:
+  - url: https://api.openaq.org
+
+paths:
+
+  /beta/averages:
+    get:
+      tags:
+        - "Average"
+      summary: "Average"
+      description: "(!!BETA!!) Provides averages across specified spatial and temporal resolutions. NOTE: Because the endpoint is in beta, it has limited functionality, functionality may change, and there may be bugs. Learn more and give feedback: github.com/openaq/openaq-averaging."
+      parameters:
+        - in: 
+          name: spatial
+          description: Indicate spatial resolution for calculated average.
+          required: true
+          default: 'location'
+          schema:
+            type: string
+            enum:
+            - location
+            - city
+            - country
+          
+        - in: query
+          name: temporal
+          required: true
+          description: Indicate temporal resolution for calculated average.
+          default: 'day'
+          schema:
+            type: string
+            enum:
+              - day
+              - month
+              - year
+        - in: query
+          name: country
+          description: Limit results by a certain country.
+          schema:
+            type: string
+        - in: query
+          name: city
+          description: Limit results by a certain city.
+          schema:
+            type: string
+        - in: query
+          name: location
+          description: Limit results by a certain location.
+          schema:
+            type: string
+        - in: query
+          name: parameter
+          description: Limit to certain one or more parameters. 
+          schema:
+            type: string
+
+        - in: query
+          name: date_from
+          description: Show results after a certain date (in utc). (ex. 2015, or 2015-12-20)
+          schema:
+            type: string
+        - in: query
+          name: date_to
+          description: Show results before a certain date (in utc). (ex. 2015-12-20, or 2015-12-20)
+          schema:
+            type: string
+        - in: query
+          name: order_by
+          description: Order by one or more fields. (ex. order_by=date or order_by[]=value&order_by[]=parameter).
+          default: date
+          schema:
+            type: array
+            items:
+              type: string
+        - in: query
+          name: sort
+          description: Define sort order for one or more fields (ex. sort=desc or sort[]=asc&sort[]=desc).
+          default: asc
+          schema:
+            type: array
+            items:
+              type: string
+        - in: query
+          name: limit
+          description: Change the number of results returned, max is 10000.
+          default: 100
+          schema:
+            type: integer
+        - in: query
+          name: page
+          default: 1
+          description: Paginate through results. Max is set at 100.
+          schema:
+            type: integer
+
+          
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AverageGetResponse"
+        "400":
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  statusCode:
+                    type: string
+                  error:
+                    type: string
+                  message:
+                    type: string
+
+  /v1/cities:
+    get:
+      tags:
+        - "Cities"
+      summary: "Cities"
+      description: Provides a simple listing of cities within the platform.
+      parameters:
+        - in: query
+          name: country
+          description: Limit results by a certain country.
+          schema:
+            type: string
+        - in: query
+          name: order_by
+          description: Order by one or more fields (ex. order_by=country or order_by[]=country&order_by[]=locations).
+          default: country
+          schema:
+            tpe: array
+            items:
+              type: string
+          
+
+components:
+
+  responses:
+    BadRequest:
+      description: Client error
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              statusCode:
+                type: string
+              error:
+                type: string
+              message:
+                type: string
+
+  schemas:
+
+    AverageGetResponse:
+      type: object
+      properties:
+        country:
+          type: string
+          description: Country for calculated average in 2 letter ISO code
+        city:
+          type: string
+          description: City for calculated average
+        location:
+          type: string
+          description: Location for calculated average
+        coordinates:
+          type: object
+          description: Latitude and longitude for calculated average
+          properties:
+            longitude:
+              type: number
+              format: float
+            latitude:
+              type: number
+              format: float
+        parameter:
+          type: string
+          description: Parameter for calculated average for
+        date:
+          type: string
+          description: Date and time for calculated average in UTC
+        average:
+          type: number
+          format: double
+          description: Calculated average
+        measurement_count:
+          type: number
+          description: Number of measurements used to calculate average
