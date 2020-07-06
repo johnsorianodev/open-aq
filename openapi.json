@@ -7,11 +7,14 @@
   },
   "servers": [
     {
-      "url": "https://api.openaq.org"
+      "url": "https://api.openaq.org/v1"
+    },
+    {
+      "url": "https://api.openaq.org/beta"
     }
   ],
   "paths": {
-    "/beta/averages": {
+    "/averages": {
       "get": {
         "tags": [
           "Average"
@@ -168,7 +171,7 @@
         }
       }
     },
-    "/v1/cities": {
+    "/cities": {
       "get": {
         "tags": [
           "Cities"
@@ -180,7 +183,10 @@
             "name": "country",
             "description": "Limit results by a certain country.",
             "schema": {
-              "type": "string"
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
             }
           },
           {
@@ -254,7 +260,7 @@
         }
       }
     },
-    "/v1/countries": {
+    "/countries": {
       "get": {
         "tags": [
           "Countries"
@@ -332,7 +338,7 @@
         }
       }
     },
-    "/v1/fetches": {
+    "/fetches": {
       "get": {
         "tags": [
           "Fetches"
@@ -410,7 +416,7 @@
         }
       }
     },
-    "/v1/latest": {
+    "/latest": {
       "get": {
         "tags": [
           "Latest"
@@ -545,7 +551,7 @@
         }
       }
     },
-    "/v1/locations": {
+    "/locations": {
       "get": {
         "tags": [
           "Locations"
@@ -680,8 +686,11 @@
             "name": "activationDate",
             "description": "Filter by metadata property \"activation date\". Has to be a range with a start and end. (ex: activationDate[]=2019/01/01&activationDate[]=2019/01/05)",
             "schema": {
-              "type": "string",
-              "format": "date"
+              "type": "array",
+              "items": {
+                "type": "string",
+                "format": "date"
+              }
             }
           },
           {
@@ -689,7 +698,11 @@
             "name": "completeness",
             "description": "Filter by metadata completeness. Has to be a range with a start and end bewtween 0 and 1. (ex: completeness[]=0.9&completeness[]=1)",
             "schema": {
-              "type": "number"
+              "type": "array",
+              "items": {
+                "type": "number",
+                "format": "float"
+              }
             }
           },
           {
@@ -697,7 +710,10 @@
             "name": "inletHeight",
             "description": "Filter by metadata property \"inlet height\". Has to be a range with a start and end. (ex: inletHeight[]=1&inletHeight[]=12)",
             "schema": {
-              "type": "number"
+              "type": "array",
+              "items": {
+                "type": "number"
+              }
             }
           }
         ],
@@ -725,7 +741,7 @@
         }
       }
     },
-    "/v1/locations/{id}": {
+    "/locations/{id}": {
       "get": {
         "tags": [
           "Locations"
@@ -773,7 +789,7 @@
         }
       }
     },
-    "/v1/locations/metadata": {
+    "/locations/metadata": {
       "put": {
         "tags": [
           "Locations"
@@ -803,7 +819,7 @@
         }
       }
     },
-    "/v1/locations/measurements": {
+    "/measurements": {
       "get": {
         "tags": [
           "Measurements"
@@ -997,7 +1013,7 @@
         }
       }
     },
-    "/v1/parameters": {
+    "/parameters": {
       "get": {
         "tags": [
           "Parameters"
@@ -1057,7 +1073,7 @@
         }
       }
     },
-    "/v1/sources": {
+    "/sources": {
       "get": {
         "tags": [
           "Sources"
