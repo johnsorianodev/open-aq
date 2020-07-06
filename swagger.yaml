@@ -5,11 +5,12 @@ info:
   description: 'An API for open air quality data.'
 
 servers:
-  - url: https://api.openaq.org
+  - url: https://api.openaq.org/v1
+  - url: https://api.openaq.org/beta
 
 paths:
 
-  /beta/averages:
+  /averages:
     get:
       tags:
         - "Average"
@@ -116,7 +117,7 @@ paths:
               schema:
                 $ref: "#/components/responses/BadRequest"
 
-  /v1/cities:
+  /cities:
     get:
       tags:
         - "Cities"
@@ -126,7 +127,11 @@ paths:
           name: country
           description: Limit results by a certain country.
           schema:
-            type: string
+            type: array
+            items:
+              type: string
+          
+
         - in: query
           name: order_by
           description: Order by one or more fields (ex. order_by=country or order_by[]=country&order_by[]=locations).
@@ -175,7 +180,7 @@ paths:
               schema:
                 $ref: "#/components/responses/BadRequest"
     
-  /v1/countries:
+  /countries:
     get:
       tags:
         - "Countries"
@@ -229,7 +234,7 @@ paths:
               schema:
                 $ref: "#/components/responses/BadRequest"
 
-  /v1/fetches:
+  /fetches:
     get:
       tags:
         - "Fetches"
@@ -283,7 +288,7 @@ paths:
               schema:
                 $ref: "#/components/responses/BadRequest"
 
-  /v1/latest:
+  /latest:
     get:
       tags:
         - "Latest"
@@ -376,7 +381,7 @@ paths:
               schema:
                 $ref: "#/components/responses/BadRequest"
 
-  /v1/locations:
+  /locations:
     get:
       tags:
         - "Locations"
@@ -393,7 +398,7 @@ paths:
           name: country
           description: Limit results by one or more countries (ex. country[]=NL&country[]=PL)
           schema:
-            type: string
+            type: strng
         - in: query
           name: location
           description: Limit results by one or more locations (ex. location[]=Reja&location[]=Nijmegen-Graafseweg)
@@ -475,18 +480,25 @@ paths:
           name: activationDate
           description: 'Filter by metadata property "activation date". Has to be a range with a start and end. (ex: activationDate[]=2019/01/01&activationDate[]=2019/01/05)'
           schema:
-            type: string
-            format: date
+            type: array
+            items:
+              type: string
+              format: date
         - in: query
           name: completeness
           description: 'Filter by metadata completeness. Has to be a range with a start and end bewtween 0 and 1. (ex: completeness[]=0.9&completeness[]=1)'
           schema:
-            type: number
+            type: array
+            items:
+              type: number
+              format: float
         - in: query
           name: inletHeight
           description: 'Filter by metadata property "inlet height". Has to be a range with a start and end. (ex: inletHeight[]=1&inletHeight[]=12)'
           schema:
-            type: number
+            type: array
+            items:
+              type: number
       responses:
         "200":
           description: ''
@@ -501,7 +513,7 @@ paths:
               schema:
                 $ref: "#/components/responses/BadRequest"
 
-  /v1/locations/{id}:
+  /locations/{id}:
     get:
       tags:
         - "Locations"
@@ -530,7 +542,7 @@ paths:
             application:
               schema:
                 $ref: "#/components/responses/BadRequest"
-  /v1/locations/metadata:
+  /locations/metadata:
     put:
       tags:
         - "Locations"
@@ -549,7 +561,7 @@ paths:
               schema:
                 $ref: "#/components/responses/BadRequest"
 
-  /v1/locations/measurements:
+  /measurements:
     get:
       tags:
         - "Measurements"
@@ -679,7 +691,7 @@ paths:
               schema:
                 $ref: "#/components/responses/BadRequest"
 
-  /v1/parameters:
+  /parameters:
     get:
       tags:
         - "Parameters"
@@ -719,7 +731,7 @@ paths:
               schema:
                 $ref: "#/components/responses/BadRequest"
 
-  /v1/sources:
+  /sources:
     get:
       tags:
         - "Sources"
@@ -781,6 +793,13 @@ components:
       $ref: "#/components/schemas/Error"
 
   schemas:
+
+    Params1:
+      type: array
+      items:
+        type: string
+    Params2:
+      type: string
 
     Error:
       type: object
